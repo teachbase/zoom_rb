@@ -16,8 +16,14 @@ module Zoom
 
         code = response['code']
 
-        raise AuthenticationError, response if code == 124
-        raise Error, response if code >= 300
+        raise AuthenticationError, build_error(response) if code == 124
+        raise Error, build_error(response) if code >= 300
+      end
+
+      def build_error(response)
+        error_hash = { code:  response['code'], message: response['message'] }
+        error_hash[:errors] = response['errors'] if response['errors']
+        error_hash
       end
 
       def parse_response(http_response)

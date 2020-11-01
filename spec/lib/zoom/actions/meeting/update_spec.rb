@@ -44,7 +44,7 @@ describe Zoom::Actions::Meeting do
       it 'raises an error' do
         expect do
           zc.meeting_update(args.merge(meeting_id: 'invalid-meeting-id'))
-        end.to raise_error(Zoom::Error)
+        end.to raise_error(Zoom::Error, { code: 300, message: 'Invalid meeting id.' }.to_s)
       end
     end
   end
