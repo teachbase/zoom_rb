@@ -21,7 +21,7 @@ module Zoom
       end
 
       def build_error(response)
-        error_hash = { code:  response['code'], message: response['message'] }
+        error_hash = { code: response['code'], message: response['message'] }
         error_hash[:errors] = response['errors'] if response['errors']
         error_hash
       end

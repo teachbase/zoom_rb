@@ -30,7 +30,7 @@ module Zoom
         options = Zoom::Params.new(Utils.extract_options!(args))
         options.require(%i[meeting_id])
         Utils.process_datetime_params!(:start_time, options)
-        # TODO Handle `topic` attr, Max of 300 characters.
+        # TODO: Handle `topic` attr, Max of 300 characters.
         # TODO Handle `timezone` attr, refer to the id value in timezone list JSON file. like "America/Los_Angeles"
         # TODO Verify `password` attr, may only contain the following characters: a-z A-Z 0-9 @ - _
         # TODO Handle `option_audio` attr, Can be "both", "telephony", "voip".
@@ -96,6 +96,12 @@ module Zoom
         options = Zoom::Params.new(Utils.extract_options!(args))
         options.require(%i[meeting_id stream_url stream_key]).permit(%i[page_url])
         Utils.parse_response self.class.patch("/meetings/#{options[:meeting_id]}/livestream", body: options.except(:meeting_id), headers: request_headers)
+      end
+
+      def ended_meeting_instances(*args)
+        options = Zoom::Params.new(Utils.extract_options!(args))
+        options.require(%i[meeting_id])
+        Utils.parse_response self.class.get("/past_meetings/#{options[:meeting_id]}/instances", headers: request_headers)
       end
     end
   end
